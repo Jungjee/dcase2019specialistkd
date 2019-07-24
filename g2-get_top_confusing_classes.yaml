@@ -1,0 +1,19 @@
+DB: /DB/TAU-urban-acoustic-scenes-2019-development/
+fold_scp: evaluation_setup/fold1_train.csv
+wav_dir: wave_np/
+nb_proc_db: 5
+batch_size: 25 #50 #24
+dir_label_dic: label_dic.pk
+
+#new
+weight_dir: /exp/DNNs/git_baseline1/weights/best_sig.pt
+svm_dir: /exp/DNNs/git_baseline1/svm/best_sig.pk
+save_dir: /exp/DNNs/git_baseline1/confmat.pk
+
+#model-related
+model:
+  first_conv: 12
+  in_channels: 2
+  filts: [128, [128, 64, 64], [64, 128,128], [128, 128,128], 128]
+  nb_fc_node: 128
+  nb_classes: 10
