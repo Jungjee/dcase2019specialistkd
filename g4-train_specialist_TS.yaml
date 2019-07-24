@@ -1,0 +1,40 @@
+name: git_specialistTS_1
+DB: /DB/TAU-urban-acoustic-scenes-2019-development/
+meta_scp: meta.csv
+fold_scp: evaluation_setup/fold1_train.csv
+wav_dir: wave_np/
+nb_proc_db: 4
+save_dir: /exp/DNNs/
+optimizer: Adam #sgd
+lr: 0.0001
+opt_mom: 0.9
+wd: 0.001
+epoch: 60
+batch_size: 24 #50 #24
+nb_samp: 240000
+c_loss_weight: 0.00005
+c_loss_lr: 0.5
+lrdec_milestones: [15, 30, 45]
+lrdec: 0.2
+weight_dir: /exp/DNNs/git_baseline1/weights/best_sig.pt
+criterion_code: mse #[cos, mse]
+dir_label_dic: label_dic.pk
+dir_specialists: ['git_baseline1/weights/best_sig.pt','git_specialist1_37/weights/best_sig.pt','git_specialist2_02/weights/best_sig.pt'] 
+temp_T: 2
+temp_S: 2
+
+#flags
+comet_disable: 0
+nesterov: 0 #for sgd optim
+amsgrad: 1 #for adam optim
+use_code_label: 0
+use_out_label: 1
+make_label_dic: 0
+
+#model-related
+model:
+  first_conv: 12
+  in_channels: 2
+  filts: [128, [128, 64, 64], [64, 128,128], [128, 128,128], 128]
+  nb_fc_node: 128
+  nb_classes: 10
