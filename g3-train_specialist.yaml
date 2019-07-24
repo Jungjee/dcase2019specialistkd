@@ -1,0 +1,37 @@
+#name: git_specialist1_37
+name: git_specialist2_02
+#name: test
+DB: /DB/TAU-urban-acoustic-scenes-2019-development/
+meta_scp: meta.csv
+fold_scp: evaluation_setup/fold1_train.csv
+wav_dir: wave_np/
+nb_proc_db: 4
+save_dir: /exp/DNNs/
+optimizer: Adam #sgd
+lr: 0.0001
+opt_mom: 0.9
+wd: 0.001
+epoch: 60
+batch_size: 24 #50 #24
+nb_samp: 240000
+c_loss_weight: 0.00005
+c_loss_lr: 0.5
+lrdec_milestones: [20, 50]
+lrdec: 0.2
+target_labels: [0, 2] #top-2 confusing pairs grom script g2 [3, 7], [0, 2]
+dir_label_dic: label_dic.pk
+weight_dir: /exp/DNNs/git_baseline1/weights/best_sig.pt
+
+#flags
+comet_disable: 0
+nesterov: 0 #for sgd optim
+amsgrad: 1 #for adam optim
+
+
+#model-related
+model:
+  first_conv: 12
+  in_channels: 2
+  filts: [128, [128, 64, 64], [64, 128,128], [128, 128,128], 128]
+  nb_fc_node: 128
+  nb_classes: 10
