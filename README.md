@@ -19,6 +19,9 @@ In our [Workshop paper] [^2], we use the concept of specialist models that is in
 
 
 
+에릭 레이먼드는 파이썬을 배운지 하루만에 원하는 프로그램을 작성할 수 있었다고 한다. [^myfootnote]
+
+[^myfootnote]: 에릭 레이먼드는 프로그래밍 경험이 많은 구루 프로그래머이다. 보통 사람은 파이썬을
 
 [^1]: H. Heo, J. Jung, H. Shim and H. Yu, *Acoustic scene classification using teacher-student learning with soft-labels*, Interspeech 2019 (accepted)
 [^2]: J. Jung, H. Heo, H. Shim and H. Yu, *DISTILLING THE KNOWLEDGE OF SPECIALIST DEEP NEURAL NETWORKS IN ACOUSTIC SCENE CLASSIFICATION*, DCASE 2019 Workshop (under review)
