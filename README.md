@@ -6,9 +6,9 @@ Overall description of the system is in the [Workshop paper] (currently under re
 
 
 ## Introduction
-Common acoustic properties among different acoustic scenes were pointed as one of the causes for performance degradation in acoustic scene classification (ASC) task. [^1] 
+Common acoustic properties among different acoustic scenes were pointed as one of the causes for performance degradation in acoustic scene classification (ASC) task. <sup>1</sup>
 These common properties resulted in a few pairs of acoustic scenes that are frequently misclassified (see the left confusion matrix in below image). 
-In our [Workshop paper] [^2], we use the concept of specialist models that is in Hinton et al.'s paper [^3], modifying for ASC. 
+In our [Workshop paper] <sup>2</sup>, we use the concept of specialist models that is in Hinton et al.'s paper <sup>3</sup>, modifying for ASC. 
 
 ## Specialist Knowledge Distillation
 
@@ -18,14 +18,11 @@ In our [Workshop paper] [^2], we use the concept of specialist models that is in
 ## How to use scripts
 
 
-
-에릭 레이먼드는 파이썬을 배운지 하루만에 원하는 프로그램을 작성할 수 있었다고 한다. [^myfootnote]
-
-[^myfootnote]: 에릭 레이먼드는 프로그래밍 경험이 많은 구루 프로그래머이다. 보통 사람은 파이썬을
-
-[^1]: H. Heo, J. Jung, H. Shim and H. Yu, *Acoustic scene classification using teacher-student learning with soft-labels*, Interspeech 2019 (accepted)
-[^2]: J. Jung, H. Heo, H. Shim and H. Yu, *DISTILLING THE KNOWLEDGE OF SPECIALIST DEEP NEURAL NETWORKS IN ACOUSTIC SCENE CLASSIFICATION*, DCASE 2019 Workshop (under review)
-[^3]: G. Hinton, O. Vinyals, and J. Dean, Distilling the Knowledge in a Neural Network, NIPS 2014 deep learning workshop
+## Reference
+===
+1: H. Heo, J. Jung, H. Shim and H. Yu, *Acoustic scene classification using teacher-student learning with soft-labels*, Interspeech 2019 (accepted)
+2: J. Jung, H. Heo, H. Shim and H. Yu, *DISTILLING THE KNOWLEDGE OF SPECIALIST DEEP NEURAL NETWORKS IN ACOUSTIC SCENE CLASSIFICATION*, DCASE 2019 Workshop (under review)
+3: G. Hinton, O. Vinyals, and J. Dean, Distilling the Knowledge in a Neural Network, NIPS 2014 deep learning workshop
 
 [Interspeech 2019 paper]: https://arxiv.org/abs/1904.10135
 [Workshop paper]: https://arxiv.org/abs/1904.10135
