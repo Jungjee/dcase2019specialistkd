@@ -19,10 +19,9 @@ In our [Workshop paper] <sup>2</sup>, we use the concept of specialist models th
 
 
 ## Reference
-===
-1: H. Heo, J. Jung, H. Shim and H. Yu, *Acoustic scene classification using teacher-student learning with soft-labels*, Interspeech 2019 (accepted)
-2: J. Jung, H. Heo, H. Shim and H. Yu, *DISTILLING THE KNOWLEDGE OF SPECIALIST DEEP NEURAL NETWORKS IN ACOUSTIC SCENE CLASSIFICATION*, DCASE 2019 Workshop (under review)
-3: G. Hinton, O. Vinyals, and J. Dean, Distilling the Knowledge in a Neural Network, NIPS 2014 deep learning workshop
+1: H. Heo, J. Jung, H. Shim and H. Yu, *Acoustic scene classification using teacher-student learning with soft-labels*, Interspeech 2019 (accepted)  
+2: J. Jung, H. Heo, H. Shim and H. Yu, *DISTILLING THE KNOWLEDGE OF SPECIALIST DEEP NEURAL NETWORKS IN ACOUSTIC SCENE CLASSIFICATION*, DCASE 2019 Workshop (under review)  
+3: G. Hinton, O. Vinyals, and J. Dean, Distilling the Knowledge in a Neural Network, NIPS 2014 deep learning workshop  
 
 [Interspeech 2019 paper]: https://arxiv.org/abs/1904.10135
 [Workshop paper]: https://arxiv.org/abs/1904.10135
