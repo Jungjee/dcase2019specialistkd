@@ -6,9 +6,9 @@ Overall description of the system is in the [Workshop paper] (currently under re
 
 
 ## Introduction
-Common acoustic properties among different acoustic scenes were pointed as one of the causes for performance degradation in acoustic scene classification (ASC) task.[^1] 
+Common acoustic properties among different acoustic scenes were pointed as one of the causes for performance degradation in acoustic scene classification (ASC) task. [^1] 
 These common properties resulted in a few pairs of acoustic scenes that are frequently misclassified (see the left confusion matrix in below image). 
-In our [Workshop paper][^2], we use the concept of specialist models that is in Hinton et al.'s paper[^3], modifying for ASC. 
+In our [Workshop paper] [^2], we use the concept of specialist models that is in Hinton et al.'s paper [^3], modifying for ASC. 
 
 ## Specialist Knowledge Distillation
 
