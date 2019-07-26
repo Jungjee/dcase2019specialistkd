@@ -12,8 +12,12 @@ Overall description of the system is in the [Workshop paper] (currently under re
 
 ## Specialist Knowledge Distillation
 
+![Overall Process Pipeline]
+![Conf mats]
+
 ## How to use scripts
 
 
 
-
+![Overall Process Pipeline]: ./overall_flow.png
+![Conf mats]: ./confusion_mat_exp.png
