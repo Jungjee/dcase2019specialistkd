@@ -19,5 +19,5 @@ Overall description of the system is in the [Workshop paper] (currently under re
 
 
 
-![Overall Process Pipeline]: ./overall_flow.png
-![Conf mats]: ./confusion_mat_exp.png
+[Overall Process Pipeline]: ./overall_flow.png
+[Conf mats]: ./confusion_mat_exp.png
