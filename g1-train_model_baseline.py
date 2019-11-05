@@ -1,22 +1,35 @@
 from comet_ml import Experiment
+import os
+import yaml
+import struct
+import pickle as pk
+import numpy as np
+import torch
+import torch.nn as nn
+
 from tqdm import tqdm
 from collections import OrderedDict
 from sklearn.metrics import roc_curve
 from scipy.optimize import brentq
 from scipy.interpolate import interp1d
 from sklearn.svm import SVC
-
-import os
-import yaml
-import struct
-import pickle as pk
-import numpy as np
-
-import torch
-import torch.nn as nn
 from torch.utils import data
 
-from g_model_CNN_C import raw_CNN_c
+from g_model_CNN_c import raw_CNN_c
+
+def get_utt_list(src_dir):
+	'''
+	Designed for DCASE2019 task 1-a
+	'''
+	l_utt = []
+	for r, ds, fs in os.walk(src_dir):
+		for f in fs:
+			if f[-3:] != 'npy':
+				continue
+			k = f.split('.')[0]
+			l_utt.append(k)
+
+	return l_utt
 
 def mixup_data(x, y, alpha=1.0, use_cuda=True):
 	'''Returns mixed inputs, pairs of targets, and lambda'''
@@ -38,8 +51,6 @@ def mixup_data(x, y, alpha=1.0, use_cuda=True):
 
 def mixup_criterion(criterion, pred, y_a, y_b, lam):
 	return lam * criterion(pred, y_a) + (1 - lam) * criterion(pred, y_b)
-
-
 
 class CenterLoss(nn.Module):
 	"""Center loss.
@@ -212,44 +223,36 @@ class Dataset_DCASE2019_t1(data.Dataset):
 		self.base_dir = base_dir
 		self.nb_samp = nb_samp
 		self.cut = cut
-		self.d_ark_files = {}
-
 
 	def __len__(self):
 		return len(self.lines)
 
-
 	def __getitem__(self, index):
-		line = self.lines[index]
-		k, f, p = line.strip().split(' ')
+		k = self.lines[index]
+		X = self.pre_emp_multiChannel(np.load(self.base_dir+k+'.npy'))
 		y = self.d_class_ans[k.split('-')[0]]
-		p = int(p)
-
-		if not f in self.d_ark_files:
-			f_tmp = '/'.join([self.base_dir, f])
-			self.d_ark_files[f] = open(f_tmp, 'rb')
-		self.d_ark_files[f].seek(p)
-
-		l = struct.unpack('i', self.d_ark_files[f].read(4))[0]
-		X = struct.unpack('%df'%(479520*2), self.d_ark_files[f].read((479520*2) *4))
-		#X = struct.unpack('%df'%(l*2), self.d_ark_files[f].read((l*2) *4))
-		X = np.asarray(X, dtype = np.float32).reshape(-1,2).T
 
 		if self.cut:
 			nb_samp = X.shape[1]
 			start_idx = np.random.randint(low = 0, high = nb_samp - self.nb_samp)
 			X = X[:, start_idx:start_idx+self.nb_samp]
+		else: X = X[:, :479520]
 		X *= 32000
 		return X, y
 	
+	def pre_emp_multiChannel(self, x):
+		'''
+		input	: (#channel, #time)	
+		output	: (#channel, #time)		
+		'''
+		return np.asarray(x[:, 1:] - 0.97 * x[:, :-1], dtype=np.float32)
 
 def make_labeldic(lines):
 	idx = 0
 	dic_label = {}
 	list_label = []
 	for line in lines:
-		k, f, p = line.strip().split(' ')
-		label = k.split('-')[0]
+		label = line.strip().split('/')[1].split('-')[0]
 		if label not in dic_label:
 			dic_label[label] = idx
 			list_label.append(label)
@@ -264,17 +267,15 @@ def split_dcase2019_fold(fold_scp, lines):
 
 	fold_list = []
 	for line in fold_lines[1:]:
-		fold_list.append(line.strip().split('\t')[0].split('/')[1])
+		fold_list.append(line.strip().split('\t')[0].split('/')[1].split('.')[0])
 		
 	for line in lines:
-		key = line.strip().split(' ')[0]
-		if key in fold_list:
+		if line in fold_list:
 			dev_lines.append(line)
 		else:
 			val_lines.append(line)
 
 	return dev_lines, val_lines
-
 
 if __name__ == '__main__':
 	#load yaml file & set comet_ml config
@@ -292,18 +293,21 @@ if __name__ == '__main__':
 	cuda = torch.cuda.is_available()
 	device = torch.device('cuda:%s'%parser['gpu_idx'][0] if cuda else 'cpu')
 
+	#get DB list
+	lines = get_utt_list(parser['DB']+'wave_np')
+
 	#get label dictionary
-	with open(parser['dir_scp'], 'r') as f:
-		lines = f.readlines()
 	if bool(parser['make_label_dic']):
-		d_class_ans, l_class_ans  = make_labeldic(lines)
-		pk.dump([d_class_ans, l_class_ans], open(parser['dir_label_dic'], 'wb'))
+		with open(parser['DB']+parser['meta_scp']) as f:
+			l_meta = f.readlines()
+		d_class_ans, l_class_ans  = make_labeldic(l_meta[1:])
+		pk.dump([d_class_ans, l_class_ans], open(parser['DB']+parser['dir_label_dic'], 'wb'))
 	else:
-		d_class_ans, l_class_ans = pk.load(open(parser['dir_label_dic'], 'rb'))
-	print(d_class_ans)
+		d_class_ans, l_class_ans = pk.load(open(parser['DB']+parser['dir_label_dic'], 'rb'))
 
 	#split trnset and devset
-	trn_lines, dev_lines = split_dcase2019_fold(fold_scp = parser['fold_scp'], lines = lines)
+	trn_lines, dev_lines = split_dcase2019_fold(fold_scp = parser['DB']+parser['fold_scp'], lines = lines)
+	print(len(trn_lines), len(dev_lines))
 	del lines
 	if bool(parser['comet_disable']):
 		np.random.shuffle(trn_lines)
@@ -316,7 +320,7 @@ if __name__ == '__main__':
 		d_class_ans = d_class_ans,
 		nb_samp = parser['nb_samp'],
 		cut = True,
-		base_dir = parser['DB'])
+		base_dir = parser['DB']+parser['wav_dir'])
 	trnset_gen = data.DataLoader(trnset,
 		batch_size = parser['batch_size'],
 		shuffle = True,
@@ -326,7 +330,7 @@ if __name__ == '__main__':
 		d_class_ans = d_class_ans,
 		nb_samp = 0,
 		cut = False,
-		base_dir = parser['DB'])
+		base_dir = parser['DB']+parser['wav_dir'])
 	devset_gen = data.DataLoader(devset,
 		batch_size = parser['batch_size'],
 		shuffle = False,
@@ -489,9 +493,7 @@ if __name__ == '__main__':
 				assert len(score_list) == len(data_y_dev)
 				for i in range(embeddings_dev.shape[0]):
 					num_predict_class[score_list[i]] += 1
-					#print(score_list[i], data_y_dev[i])
 					if score_list[i] == data_y_dev[i]:
-						#print('cor')
 						num_corr += 1
 						num_corr_class[data_y_dev[i]] += 1
 				acc.append(float(num_corr)/ embeddings_dev.shape[0])
@@ -523,15 +525,6 @@ if __name__ == '__main__':
 						torch.save(model.state_dict(), save_dir +  'weights/best_sig.pt')
 				
 	f_acc.close()
-
-
-
-
-
-
-
-
-
 
 
 

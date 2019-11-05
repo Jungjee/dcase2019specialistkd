@@ -1,4 +1,4 @@
-name: git_baseline1
+name: git_baseline3
 DB: /DB/TAU-urban-acoustic-scenes-2019-development/
 meta_scp: meta.csv
 fold_scp: evaluation_setup/fold1_train.csv
@@ -16,8 +16,6 @@ batch_size: 24 #50 #24
 nb_samp: 240000
 c_loss_weight: 0.00005
 c_loss_lr: 0.5
-#lrdec_milestones: [20, 50]
-#lrdec: 0.2
 mixup_start: 5
 mixup_alpha: 0.1
 dir_label_dic: label_dic.pk
