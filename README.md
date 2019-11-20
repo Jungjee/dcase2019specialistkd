@@ -1,7 +1,7 @@
 # Distilling the Knowledge of Specialist DNNs in Acoustic Scene Classification
 This repository contains script and DNN models that was used for the DCASE2019 challenge task1-a.
 Currently, there are only codes for raw waveform model. 
-Overall description of the system is in the [Workshop paper] (currently under review) and implementation details are further dealt in the [Technical report].  
+Overall description of the system is in the [Workshop paper] and implementation details are further dealt in the [Technical report].  
 (for now, the Workshop paper link is connected to our previous work on Knowledge distillation in acoustic scene classification, which will be presented at Interspeech 2019)
 
 
